@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PostController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +16,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $post = Post::latest()->first();
+    if (is_null($post)) {
+        $post = (object)[
+        'title'=>'Super APP',
+        'content'=> 'Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Suscipit quod quaerat ad, asperiores excepturi, ipsa eligendi eum nostrum
+        et quia similique dolore accusantium odio sunt!'
+    ];
+    }
+
+    return view('welcome', ['post'=>$post]);
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::resource('posts', PostController::class);
 
 require __DIR__.'/auth.php';
