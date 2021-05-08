@@ -1,62 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Super APP - Laravel Multitenancy Example
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Introduction
 
-## About Laravel
+> A Multitenancy example project using Laravel 8 and [Spatie Laravel Multitenancy package](
+https://spatie.be/docs/laravel-multitenancy/v2/installation/base-installation)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Code Samples
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+`app\Http\Kernel.php`
 
-## Learning Laravel
+```php
+'tenant.web' => [
+\Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,     \Spatie\Multitenancy\Http\Middleware\EnsureValidTenantSession::class,
+],
+'tenant.api' => [
+\Spatie\Multitenancy\Http\Middleware\NeedsTenant::class,
+],
+```
+`config/multitenancy.php`
+```php
+'enabled' => env('MULTITENANCY_ENABLED', false),
+//...
+```
+`app/Providers/RouteServiceProvider.php`
+```php
+$api = ['api'];
+$web = ['web'];
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+if (config('multitenancy.enabled')) {
+  array_push($api, 'tenant.api');
+	array_push($web, 'tenant.web');
+}
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Route::prefix('api')
+	->middleware($api)
+  ->namespace($this->namespace)
+  ->group(base_path('routes/api.php'));
 
-## Laravel Sponsors
+Route::middleware($web)
+	->namespace($this->namespace)
+  ->group(base_path('routes/web.php'));
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Installation
 
-### Premium Partners
+> Clone reposository
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+```php
+git clone git@github.com:victoryoalli/superapp.git
+```
 
-## Contributing
+> Install PHP packages using composer
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```php
+composer install
+```
 
-## Code of Conduct
+> Install Javascript/Node packages using npm
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```php
+npm install && npm run dev
+```
 
-## Security Vulnerabilities
+> Create a Database `superapp`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+> Copy `.env.example` to `.env`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Follow the instructions  (ESPAÑOL)
+
+> [Laravel Meetup - Multitenancy](https://laraveles.doyo.digital/course/15-de-abril-2021-zpgk-zjni/laravel-multitenancy-lfip-xmyn)
+
+Final project code
+
+```bash
+git fetch
+git checkout meetup
+```
+
+> or
+
+> [Youtube Channel ELiberio - Laravel Multi-Tenancy](https://www.youtube.com/watch?v=CdJUDAx7yOA)
+
+Final project code
+```bash
+git fetch
+git checkout webinar
+```
