@@ -73,6 +73,19 @@ npm install && npm run dev
 
 > [Laravel Meetup - Multitenancy](https://laraveles.doyo.digital/course/15-de-abril-2021-zpgk-zjni/laravel-multitenancy-lfip-xmyn)
 
+Final project code
+
+```bash
+git fetch
+git checkout meetup
+```
+
 > or
 
-> [Youtub Channel ELiberio - Laravel Multi-Tenancy](https://www.youtube.com/watch?v=CdJUDAx7yOA)
+> [Youtube Channel ELiberio - Laravel Multi-Tenancy](https://www.youtube.com/watch?v=CdJUDAx7yOA)
+
+Final project code
+```bash
+git fetch
+git checkout webinar
+```
